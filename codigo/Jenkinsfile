@@ -1,0 +1,45 @@
+pipeline {
+    stages {
+        //Define qual container ou servidor será usado nesses estágios
+        // agent {
+        //     //Usa uma imagem docker
+        //     docker { image 'node:20.9.0-alpine' }
+        // }
+        agent { dockerfile true }
+
+        //Build a aplicação que será usada
+        stage('Build') {
+            steps {
+                /*
+                //Se fosse clonando
+                git 'https://github.com/carloswgama/repositorio'
+                sh npm install 
+                sh npm start
+                */
+                sh 'npm start'
+            }
+        }
+
+        //Testa se está funcionando
+        stage('Test') {
+              steps {
+                sh "npm test"
+              }
+        }
+
+
+        //Faz o deploy no servidor
+        //https://www.jenkins.io/doc/book/pipeline/docker/
+        // def remote = [:]
+        // remote.name = 'test'
+        // remote.host = 'test.domain.com'
+        // remote.user = 'root'
+        // remote.password = 'password'
+        // remote.allowAnyHosts = true
+        stage('Deploy') {
+            // sshCommand remote: remote, command: "ls -lrt"
+            // sshCommand remote: remote, command: "for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done"
+            
+        }
+    }   
+}
